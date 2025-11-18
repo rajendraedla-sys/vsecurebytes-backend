@@ -14,6 +14,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const validatedData = contactSchema.parse(req.body);
       
       // Create nodemailer transporter (configure with your email service)
+      // Log email configuration (without password) for debugging
+      console.log('Email config:', {
+        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+        port: process.env.SMTP_PORT || '587',
+        user: process.env.SMTP_USER || process.env.EMAIL_USER,
+        hasPassword: !!(process.env.SMTP_PASS || process.env.EMAIL_PASS)
+      });
+
       const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST || 'smtp.gmail.com',
         port: parseInt(process.env.SMTP_PORT || '587'),
@@ -25,6 +33,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           user: process.env.SMTP_USER || process.env.EMAIL_USER,
           pass: process.env.SMTP_PASS || process.env.EMAIL_PASS,
         },
+        debug: true, // Enable debug logging
       });
 
       // Email content
