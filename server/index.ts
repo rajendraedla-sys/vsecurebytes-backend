@@ -89,7 +89,8 @@ app.use((req, res, next) => {
 
   // Setup Vite in development mode
   if (process.env.NODE_ENV === 'development') {
-    const { setupVite } = await import("./vite");
+    // Import from the separately built vite module to avoid bundling vite in production
+    const { setupVite } = await import("../dist/vite.js");
     await setupVite(app, server);
   } else {
     const { serveStatic } = await import("./static");
