@@ -1,0 +1,42 @@
+About Us
+vSecurebytes is a cutting-edge cybersecurity and GenAI innovation company focused on building scalable, AI-driven applications across offensive security, defensive operations, and IT governance. Our mission is to empower organizations with locally hosted, privacy-first AI solutions that enhance security, visibility, and operational efficiency.
+
+Founders
+vSecurebytes was founded by Praveen Kumar, Raj Narra, and Bindu Sree—a team of cybersecurity and AI specialists with deep expertise in enterprise infrastructure, ethical hacking, and intelligent automation.
+
+Our Journey
+We began by integrating Generative AI into offensive security tooling—pioneering autonomous penetration testing and external attack surface monitoring powered by locally deployed AI models. These tools simulate real-world adversaries, delivering continuous threat discovery without compromising data privacy.
+
+Our Vision
+To become a central force in AI-powered cybersecurity—bridging automation, compliance, and intelligent decision-making. As threats evolve, we believe AI must be embedded natively within the organization’s infrastructure to provide real-time, contextual, and proactive security insights.
+
+Our Expanding Capabilities
+Building on our offensive security foundation, we are rapidly expanding into:
+
+Internal AI Agents & Chatbots
+Deploying secure, role-based AI chatbots trained on internal documentation and user profiles to support IT teams, developers, and end-users with automated, context-aware assistance.
+
+Infrastructure Monitoring & Cost Intelligence
+Enhancing traditional IT monitoring with AI-driven anomaly detection, predictive insights, and cloud-native cost optimization.
+
+Governance & Compliance AI
+Automating compliance checks, log analysis, and risk reporting using secure, locally hosted AI models aligned with internal policies and regulatory standards.
+
+Our Approach
+
+Local AI-First: All models are deployed privately, ensuring full data control and compliance.
+
+Modular Design: Solutions plug into existing security and IT ecosystems with ease.
+
+Scalable Architecture: Built to support growing enterprises with adaptable modules across red teaming, IT operations, and governance.
+
+Product Snapshot
+
+vSecurebytes Pro – Our flagship AI platform combining autonomous offensive testing, external surface analysis, and smart reporting powered by local AI models.
+
+vSecure ChatOps – Internal, role-based AI chatbots for IT support, knowledge retrieval, and automation.
+
+InfraSense AI – Real-time IT monitoring, anomaly detection, and cost optimization platform.
+
+GovernIQ – AI-driven governance and compliance automation suite with continuous audit readiness.
+
