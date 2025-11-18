@@ -2,7 +2,8 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import nodemailer from "nodemailer";
 import { z } from "zod";
-import { insertContactSchema } from "@shared/schema";
+import { insertContactSchema, contacts } from "@shared/schema";
+import { storage } from "./db-storage";
 
 // Use the schema from shared for consistency
 const contactSchema = insertContactSchema;
@@ -12,7 +13,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/contact", async (req, res) => {
     try {
       const validatedData = contactSchema.parse(req.body);
-      
+
+      // Save to database if available
+      try {
+        if (storage) {
+          await (storage as any).createContact(validatedData);
+          console.log('Contact saved to database:', validatedData.email);
+        } else {
+          console.log('No database configured, contact not saved to DB');
+        }
+      } catch (dbError) {
+        console.error('Failed to save contact to database:', dbError);
+        // Continue with email sending even if DB save fails
+      }
+
       // Create nodemailer transporter (configure with your email service)
       // Log email configuration (without password) for debugging
       console.log('Email config:', {
@@ -97,11 +111,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     } catch (error) {
       console.error('Contact form error:', error);
-      res.status(400).json({ 
-        success: false, 
-        message: error instanceof z.ZodError 
-          ? error.errors[0].message 
-          : "Failed to process consultation request" 
+      res.status(400).json({
+        success: false,
+        message: error instanceof z.ZodError
+          ? error.errors[0].message
+          : "Failed to process consultation request"
+      });
+    }
+  });
+
+  // Admin endpoint to view contacts (basic implementation)
+  app.get("/api/admin/contacts", async (req, res) => {
+    try {
+      if (!storage) {
+        return res.status(503).json({
+          error: "Database not configured"
+        });
+      }
+
+      const contacts = await (storage as any).getAllContacts();
+      res.json({
+        success: true,
+        contacts: contacts,
+        count: contacts.length
+      });
+    } catch (error) {
+      console.error('Failed to retrieve contacts:', error);
+      res.status(500).json({
+        error: "Failed to retrieve contacts",
+        message: error instanceof Error ? error.message : "Unknown error"
       });
     }
   });
