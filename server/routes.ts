@@ -18,6 +18,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         host: process.env.SMTP_HOST || 'smtp.gmail.com',
         port: parseInt(process.env.SMTP_PORT || '587'),
         secure: false,
+        connectionTimeout: 10000, // 10 seconds
+        greetingTimeout: 5000,    // 5 seconds
+        socketTimeout: 15000,     // 15 seconds
         auth: {
           user: process.env.SMTP_USER || process.env.EMAIL_USER,
           pass: process.env.SMTP_PASS || process.env.EMAIL_PASS,
@@ -59,20 +62,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
 
       try {
-        // Send both emails
-        await transporter.sendMail(mailOptions);
-        await transporter.sendMail(userConfirmationOptions);
-        
-        res.json({ 
-          success: true, 
-          message: "Consultation request sent successfully" 
+        // Send both emails with timeout protection
+        const emailTimeout = (ms: number) =>
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Email timeout')), ms));
+
+        await Promise.race([
+          Promise.all([
+            transporter.sendMail(mailOptions),
+            transporter.sendMail(userConfirmationOptions)
+          ]),
+          emailTimeout(30000) // 30 second overall timeout
+        ]);
+
+        res.json({
+          success: true,
+          message: "Consultation request sent successfully"
         });
       } catch (emailError) {
         console.error('Email sending failed:', emailError);
         // Still return success to user, but log the error
-        res.json({ 
-          success: true, 
-          message: "Consultation request received successfully" 
+        res.json({
+          success: true,
+          message: "Consultation request received successfully"
         });
       }
     } catch (error) {
